@@ -466,12 +466,16 @@
 
                     <!-- Вкладка 2: Додати власну страву -->
                     <div id="foodCustomPanel" class="hidden space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800">
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div class="sm:col-span-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-6 gap-3">
+                            <div class="sm:col-span-3">
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Назва страви або продукту</label>
-                                <input type="text" id="customFoodName" placeholder="Напр., Домашні сирники зі сметаною" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm">
+                                <input type="text" id="customFoodName" placeholder="Напр., Домашні сирники" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm">
                             </div>
-                            <div>
+                            <div class="sm:col-span-1">
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Вага (г)</label>
+                                <input type="number" id="customGrams" value="100" min="1" max="5000" step="10" placeholder="100" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold" title="Вага цієї порції в грамах (для точного збереження на 100г)">
+                            </div>
+                            <div class="sm:col-span-2">
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Прийом їжі</label>
                                 <select id="customMealType" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm">
                                     <option value="Сніданок">🌅 Сніданок</option>
@@ -484,19 +488,19 @@
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                             <div>
                                 <label class="block text-[11px] font-medium text-slate-500 mb-1">Білки (г)</label>
-                                <input type="number" id="customProtein" value="15" min="0" step="0.5" oninput="autoCalcCustomCalories()" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold">
+                                <input type="number" id="customProtein" value="" placeholder="0" min="0" step="0.5" oninput="autoCalcCustomCalories()" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold">
                             </div>
                             <div>
                                 <label class="block text-[11px] font-medium text-slate-500 mb-1">Жири (г)</label>
-                                <input type="number" id="customFat" value="10" min="0" step="0.5" oninput="autoCalcCustomCalories()" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold">
+                                <input type="number" id="customFat" value="" placeholder="0" min="0" step="0.5" oninput="autoCalcCustomCalories()" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold">
                             </div>
                             <div>
                                 <label class="block text-[11px] font-medium text-slate-500 mb-1">Вуглеводи (г)</label>
-                                <input type="number" id="customCarbs" value="25" min="0" step="0.5" oninput="autoCalcCustomCalories()" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold">
+                                <input type="number" id="customCarbs" value="" placeholder="0" min="0" step="0.5" oninput="autoCalcCustomCalories()" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold">
                             </div>
                             <div>
                                 <label class="block text-[11px] font-medium text-slate-500 mb-1">Калорії (ккал)</label>
-                                <input type="number" id="customCalories" value="250" min="0" step="1" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-bold text-emerald-600">
+                                <input type="number" id="customCalories" value="" placeholder="0" min="0" step="1" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-bold text-emerald-600">
                             </div>
                         </div>
                         <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
@@ -1079,26 +1083,59 @@
                                 ${isCustom ? '<span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Мій</span>' : ''}
                             </div>
                             <p class="text-[11px] text-slate-400">
-                                <span class="font-semibold text-slate-600 dark:text-slate-300">${food.kcal} ккал</span>/100г •
+                                <span class="font-semibold text-slate-600 dark:text-slate-300">${food.kcal} ккал</span>/${food.isFixedPortion ? 'порція' : '100г'} •
                                 Б:${food.p} Ж:${food.f} В:${food.c}
                             </p>
                         </div>
                     </div>
-                    <button type="button" onclick="addPresetMeal('${food.id}')" class="shrink-0 w-8 h-8 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 group-hover:bg-emerald-500 group-hover:text-white group-hover:border-emerald-500 text-slate-600 dark:text-slate-200 flex items-center justify-center transition shadow-sm" title="Додати у щоденник">
-                        <i class="ph-bold ph-plus text-sm"></i>
-                    </button>
+                    <div class="flex items-center gap-1 shrink-0">
+                        ${isCustom ? `
+                        <button type="button" onclick="deleteCustomPreset('${food.id}')" class="w-8 h-8 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-rose-500 hover:text-white hover:border-rose-500 text-slate-400 flex items-center justify-center transition shadow-sm" title="Видалити зі збережених">
+                            <i class="ph ph-trash text-sm"></i>
+                        </button>
+                        ` : ''}
+                        <button type="button" onclick="addPresetMeal('${food.id}')" class="w-8 h-8 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 group-hover:bg-emerald-500 group-hover:text-white group-hover:border-emerald-500 text-slate-600 dark:text-slate-200 flex items-center justify-center transition shadow-sm" title="Додати у щоденник">
+                            <i class="ph-bold ph-plus text-sm"></i>
+                        </button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
+        }
+
+        function deleteCustomPreset(foodId) {
+            state.customPresets = (state.customPresets || []).filter(item => item.id !== foodId);
+            renderPresetsList();
+            saveStateToStorage();
+            showToast('Страву видалено зі списку');
         }
 
         function addPresetMeal(foodId) {
             const food = getAllFoods().find(item => item.id === foodId);
             if (!food) return;
 
-            const portionInput = document.getElementById('presetPortionGrams');
-            const grams = Math.max(5, Math.min(2500, parseFloat(portionInput.value) || food.defaultPortion));
             const mealType = document.getElementById('presetMealType').value;
+
+            // Якщо це власна страва зі стабільними БЖВ на порцію, додаємо рівно 1:1 без множення на 150 г
+            if (food.isFixedPortion) {
+                state.meals.unshift({
+                    uid: Date.now() + Math.random(),
+                    mealType,
+                    name: food.name,
+                    icon: food.icon,
+                    grams: food.defaultPortion || null,
+                    kcal: Math.round(food.kcal),
+                    p: +Number(food.p).toFixed(1),
+                    f: +Number(food.f).toFixed(1),
+                    c: +Number(food.c).toFixed(1)
+                });
+                updateUI();
+                showToast(`Додано: ${food.name} (${Math.round(food.kcal)} ккал)`);
+                return;
+            }
+
+            const portionInput = document.getElementById('presetPortionGrams');
+            const grams = Math.max(5, Math.min(2500, parseFloat(portionInput.value) || food.defaultPortion || 100));
             const ratio = grams / 100;
 
             state.meals.unshift({
@@ -1121,18 +1158,36 @@
             const p = parseFloat(document.getElementById('customProtein').value) || 0;
             const f = parseFloat(document.getElementById('customFat').value) || 0;
             const c = parseFloat(document.getElementById('customCarbs').value) || 0;
+            if (p === 0 && f === 0 && c === 0) {
+                document.getElementById('customCalories').value = '';
+                return;
+            }
             const kcal = Math.round(p * 4 + f * 9 + c * 4);
             document.getElementById('customCalories').value = kcal;
         }
 
         function addCustomFoodItem() {
             const nameInput = document.getElementById('customFoodName');
+            const gramsInput = document.getElementById('customGrams');
+            const pInput = document.getElementById('customProtein');
+            const fInput = document.getElementById('customFat');
+            const cInput = document.getElementById('customCarbs');
+            const kcalInput = document.getElementById('customCalories');
+
             const name = nameInput.value.trim() || 'Власна страва';
             const mealType = document.getElementById('customMealType').value;
-            const p = Math.max(0, parseFloat(document.getElementById('customProtein').value) || 0);
-            const f = Math.max(0, parseFloat(document.getElementById('customFat').value) || 0);
-            const c = Math.max(0, parseFloat(document.getElementById('customCarbs').value) || 0);
-            const kcal = Math.max(0, parseFloat(document.getElementById('customCalories').value) || Math.round(p * 4 + f * 9 + c * 4));
+            const grams = parseFloat(gramsInput.value) || null;
+            const p = Math.max(0, parseFloat(pInput.value) || 0);
+            const f = Math.max(0, parseFloat(fInput.value) || 0);
+            const c = Math.max(0, parseFloat(cInput.value) || 0);
+            const rawKcal = parseFloat(kcalInput.value);
+            const kcal = !isNaN(rawKcal) && rawKcal >= 0 ? Math.round(rawKcal) : Math.round(p * 4 + f * 9 + c * 4);
+
+            if (kcal === 0 && p === 0 && f === 0 && c === 0) {
+                showToast('Введіть БЖВ або калорійність страви');
+                return;
+            }
+
             const saveToPresets = document.getElementById('saveToPresetsCheckbox').checked;
 
             if (saveToPresets && nameInput.value.trim()) {
@@ -1147,7 +1202,8 @@
                     p: +p.toFixed(1),
                     f: +f.toFixed(1),
                     c: +c.toFixed(1),
-                    defaultPortion: 100
+                    defaultPortion: grams,
+                    isFixedPortion: true
                 });
                 renderPresetsList();
             }
@@ -1157,16 +1213,23 @@
                 mealType,
                 name,
                 icon: '🍽️',
-                grams: null,
+                grams: grams ? Math.round(grams) : null,
                 kcal: Math.round(kcal),
                 p: +p.toFixed(1),
                 f: +f.toFixed(1),
                 c: +c.toFixed(1)
             });
 
+            // Повне очищення всіх полів форми після додавання, щоб старі цифри не тягнулися в наступні страви
             nameInput.value = '';
+            pInput.value = '';
+            fInput.value = '';
+            cInput.value = '';
+            kcalInput.value = '';
+            gramsInput.value = '100';
+
             updateUI();
-            showToast(`Страву «${name}» додано та збережено`);
+            showToast(`Страву «${name}» додано (${Math.round(kcal)} ккал)`);
         }
 
         function removeMeal(uid) {
